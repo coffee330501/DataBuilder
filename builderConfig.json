@@ -1,10 +1,10 @@
 {
   "SQLType":"postgresql",
   "host": "localhost",
-  "port": "5433",
+  "port": "5432",
   "user": "postgres",
   "password": "root",
   "database": "postgres",
-  "tables": ["policy", "account"],
+  "tables": ["policy", "account","test"],
   "dataSize": 22
 }

@@ -1,8 +1,12 @@
 const configParser = require("./config-parser");
 
 /**
- * 解析表结构
+ * 表结构解析器
  */
+
+ /**
+  * 解析Postgresql
+  */
 async function parsePostgresql() {
   let structures = {};
   for (const tableName of configParser.tables) {
@@ -31,6 +35,27 @@ async function parsePostgresql() {
   }
   return structures;
 }
+ /**
+  * 解析MySQL
+  */
+ async function parseMySQL() {
+   return null;
+ }
 
+ /**
+  * 解析工厂 
+  */
+ //TODO 修改写法
+function parse(){
+  switch(configParser.sqlType){
+    case 'postgres':
+    case 'postgresql':
+      return parsePostgresql();
+    case 'mysql':
+    case 'MYSQL':
+    case 'MySQL':
+      return parseMySQL();
+  }
+}
 
-module.exports = parsePostgresql;
+module.exports = { parse };

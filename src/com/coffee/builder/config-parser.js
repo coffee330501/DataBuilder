@@ -1,11 +1,14 @@
+/**
+ * 配置解析器
+ */
 const fs = require("fs");
-const { Pool, Client } = require("pg");
+const { Pool } = require("pg");
 
 let tables = "";
 let sqlType = [];
 
 const builderConfig = JSON.parse(
-  fs.readFileSync("./builderConfig.json", "utf-8")
+  fs.readFileSync("../../../../builderConfig.json", "utf-8")
 );
 
 tables = builderConfig.tables;
