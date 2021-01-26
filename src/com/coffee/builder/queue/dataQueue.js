@@ -12,7 +12,15 @@ const dateQueue = [];
 const float4Queue = [];
 const float8Queue = [];
 
-//TODO 导出所有变量
-module.exports ={
-  uuidQueue
-}
+module.exports = {
+  varcharQueue,
+  uuidQueue,
+  int8Queue,
+  int4Queue,
+  boolQueue,
+  jsonQueue,
+  timeStampQueue,
+  dateQueue,
+  float4Queue,
+  float8Queue,
+};
