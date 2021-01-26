@@ -8,7 +8,7 @@ let tables = "";
 let sqlType = [];
 
 const builderConfig = JSON.parse(
-  fs.readFileSync("../../../../builderConfig.json", "utf-8")
+  fs.readFileSync("../../../../../builderConfig.json", "utf-8")
 );
 
 tables = builderConfig.tables;
