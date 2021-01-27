@@ -3,6 +3,32 @@ const UUID = require("node-uuid");
 const dataQueue = require("../queue/dataQueue");
 
 /**
+ * 队列和对应的生成器
+ */
+class QueueGenerator {
+  constructor(queue, ...generator) {
+    this.queue = queue;
+    this.generators = [];
+    this.generators.push(generator);
+  } 
+}
+/**
+ * 建立类型和队列、生成器的映射关系
+ */
+const typeQueueGenerator = new Map();
+typeQueueGenerator.set('varchar',new QueueGenerator(dataQueue.varcharQueue,generateVarchar));
+typeQueueGenerator.set('uuid',new QueueGenerator(dataQueue.uuidQueue,generateUUID_V1,generateUUID_V4));
+typeQueueGenerator.set('int4',new QueueGenerator(dataQueue.int4Queue,generateint4));
+typeQueueGenerator.set('int8',new QueueGenerator(dataQueue.int8Queue,generateint8));
+typeQueueGenerator.set('int8',new QueueGenerator(dataQueue.int8Queue,generateint8));
+typeQueueGenerator.set('bool',new QueueGenerator(dataQueue.boolQueue,generatorBool));
+typeQueueGenerator.set('json',new QueueGenerator(dataQueue.jsonQueue,generateJson));
+typeQueueGenerator.set('date',new QueueGenerator(dataQueue.dateQueue,generateDate));
+typeQueueGenerator.set('timestamp',new QueueGenerator(dataQueue.timeStampQueue,generateTimeStamp));
+//别名
+typeQueueGenerator.set('int',new QueueGenerator(dataQueue.int8Queue,generateint8));
+console.log(typeQueueGenerator.get('varchar'));
+/**
  * 生产varchar数据
  */
 function generateVarchar() {
@@ -74,6 +100,12 @@ function generateDate() {
 }
 
 /**
+ * 生产null
+ */
+function generateNull(queue){
+  queue.push(null);
+}
+/**
  * 生产随机单键值对json
  */
 function generateAJson() {
@@ -127,23 +159,26 @@ function positiveOrNegative() {
  */
 function generate(type) {
   switch (type) {
-    case 'varchar':
+    case "varchar":
       generateVarchar();
       break;
-    case 'uuid':
+    case "uuid":
       generateUUID_V1();
       break;
-    case 'int8':
-    case 'int':
+    case "int8":
+    case "int":
       generateint8();
       break;
-    case 'bool':
+    case "bool":
       generatorBool();
       break;
-    case 'json':
+    case "json":
       generateJson();
       break;
   }
 }
 
-module.exports = {};
+module.exports = {
+  typeQueueGenerator,
+  generateNull
+};

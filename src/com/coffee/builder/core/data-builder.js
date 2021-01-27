@@ -4,13 +4,28 @@
  */
 const tableParser = require("./table-parser");
 const dataQueue = require("../queue/dataQueue");
-const publicWorker = require('worker_threads');
+const {
+  isMainThread,
+  parentPort,
+  workerData,
+  threadId,
+  MessageChannel,
+  MessagePort,
+  Worker,
+} = require("worker_threads");
 
-let typeMap = new Map();
+const worker = new Worker("./woker.js", { workerData: { type: "varchar" } });
+worker.on("exit", (code) => {
+  console.log(`main: worker stopped with exit code ${code}`);
+});
+worker.on("message", (msg) => {
+  console.log(`main: receive ${msg}`);
+  worker.postMessage(msg + 1);
+});
 
-async function getStructures() {
-  let structures = await tableParser.parse();
-  console.log(JSON.stringify(structures));
-}
+// async function getStructures() {
+//   let structures = await tableParser.parse();
+//   console.log(JSON.stringify(structures));
+// }
 
 // get
