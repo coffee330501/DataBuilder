@@ -8,8 +8,7 @@ const dataQueue = require("../queue/dataQueue");
 class QueueGenerator {
   constructor(queue, ...generator) {
     this.queue = queue;
-    this.generators = [];
-    this.generators.push(generator);
+    this.generator=generator;
   } 
 }
 /**
@@ -27,7 +26,6 @@ typeQueueGenerator.set('date',new QueueGenerator(dataQueue.dateQueue,generateDat
 typeQueueGenerator.set('timestamp',new QueueGenerator(dataQueue.timeStampQueue,generateTimeStamp));
 //别名
 typeQueueGenerator.set('int',new QueueGenerator(dataQueue.int8Queue,generateint8));
-console.log(typeQueueGenerator.get('varchar'));
 /**
  * 生产varchar数据
  */

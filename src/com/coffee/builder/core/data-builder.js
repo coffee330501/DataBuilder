@@ -20,7 +20,7 @@ worker.on("exit", (code) => {
 });
 worker.on("message", (msg) => {
   console.log(`main: receive ${msg}`);
-  worker.postMessage(msg + 1);
+  worker.postMessage(1);
 });
 
 // async function getStructures() {

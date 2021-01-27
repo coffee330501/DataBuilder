@@ -4,7 +4,7 @@ const {
 } = require('worker_threads');
  
 function mainThread() {
-  const worker = new Worker('./test2.js', { workerData: 0 });
+  const worker = new Worker(__filename, { workerData: 0 });
   worker.on('exit', code => { console.log(`main: worker stopped with exit code ${code}`); });
   worker.on('message', msg => {
     console.log(`main: receive ${msg}`);
