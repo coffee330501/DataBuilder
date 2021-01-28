@@ -4,11 +4,11 @@ const configParser = require("./config-parser");
  * 表结构解析器
  */
 
- /**
-  * 解析Postgresql
-  */
+/**
+ * 解析Postgresql
+ */
 async function parsePostgresql() {
-  let structures = {};
+  let structures = [];
   for (const tableName of configParser.tables) {
     let structure = await configParser.query(`SELECT A
     .attnum,
@@ -31,29 +31,32 @@ async function parsePostgresql() {
     AND A.atttypid = T.oid 
   ORDER BY
     A.attnum;`);
-    structures.tableName = tableName;
-    structures.structure = structure;
+    structures.push({
+      tableName: tableName,
+      structure: structure.rows,
+    });
   }
+  console.log(JSON.stringify(structures));
   return structures;
 }
- /**
-  * 解析MySQL
-  */
- async function parseMySQL() {
-   return null;
- }
+/**
+ * 解析MySQL
+ */
+async function parseMySQL() {
+  return null;
+}
 
- /**
-  * 解析工厂 
-  */
-function parse(){
-  switch(configParser.sqlType){
-    case 'postgres':
-    case 'postgresql':
+/**
+ * 解析工厂
+ */
+function parse() {
+  switch (configParser.sqlType) {
+    case "postgres":
+    case "postgresql":
       return parsePostgresql();
-    case 'mysql':
-    case 'MYSQL':
-    case 'MySQL':
+    case "mysql":
+    case "MYSQL":
+    case "MySQL":
       return parseMySQL();
   }
 }
