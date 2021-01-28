@@ -152,30 +152,6 @@ function positiveOrNegative() {
   return Math.random() > 0.5 ? 1 : -1;
 }
 
-/**
- * 根据字段类型选择对应生产方法
- */
-function generate(type) {
-  switch (type) {
-    case "varchar":
-      generateVarchar();
-      break;
-    case "uuid":
-      generateUUID_V1();
-      break;
-    case "int8":
-    case "int":
-      generateint8();
-      break;
-    case "bool":
-      generatorBool();
-      break;
-    case "json":
-      generateJson();
-      break;
-  }
-}
-
 module.exports = {
   typeQueueGenerator,
   generateNull

@@ -31,7 +31,8 @@ async function parsePostgresql() {
     AND A.atttypid = T.oid 
   ORDER BY
     A.attnum;`);
-    structures.tableName = structure;
+    structures.tableName = tableName;
+    structures.structure = structure;
   }
   return structures;
 }
@@ -45,7 +46,6 @@ async function parsePostgresql() {
  /**
   * 解析工厂 
   */
- //TODO 修改写法
 function parse(){
   switch(configParser.sqlType){
     case 'postgres':

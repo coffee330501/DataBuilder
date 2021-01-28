@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/coffee330501/DataBuilder#readme",
   "dependencies": {
+    "chalk": "^4.1.0",
     "node-uuid": "^1.4.8",
     "pg": "^8.5.1",
     "string-random": "^0.1.3"

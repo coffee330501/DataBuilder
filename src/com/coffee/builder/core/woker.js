@@ -1,4 +1,6 @@
 const { typeQueueGenerator } = require("../generator/data-generator");
+const ThreadMsgEnum = require('../enum/thread-enum');
+const chalk = require('chalk');
 const {
   isMainThread,
   parentPort,
@@ -15,21 +17,15 @@ let generator;
  */
 const queueAndGenerator = typeQueueGenerator.get(workerData.type);
 generator = queueAndGenerator.generator[0];
-console.log(`worker: threadId ${threadId} start with ${__filename}`);
-console.log(`worker: workerData ${workerData}`);
+chalk.yellow(`工作线程启动...,接收到主线程数据${workerData}`)
 parentPort.on("message", (msg) => {
-  // console.log(`worker: receive ${msg}`);
-  // console.log('msg',msg);
-  if (msg === 0) {
+  if (msg === ThreadMsgEnum.STOP) {
     process.exit();
-  } else if(msg == 1) {
-    // console.log('true');
-    while (true) {
-      // console.log("线程 " + threadId + " 正在生成数据...");
+  } else if(msg == ThreadMsgEnum.START) {
+    chalk.blueBright('开始生成数据...')
+    while (queueAndGenerator.queue.length<5000) {
       generator();
-      console.log(queueAndGenerator.queue);
     }
   }
 });
-console.log('worker send msg 1');
-parentPort.postMessage(1);
+parentPort.postMessage(ThreadMsgEnum.START);
