@@ -2,7 +2,6 @@
  * 测试数据暂存队列
  */
 const uuidQueue = [];
-const varcharQueue = [];
 const int8Queue = [];
 const int4Queue = [];
 const boolQueue = [];
@@ -11,6 +10,13 @@ const timeStampQueue = [];
 const dateQueue = [];
 const float4Queue = [];
 const float8Queue = [];
+
+const varcharQueue = new FlexibleLengthQueue();
+class FlexibleLengthQueue{
+  constructor() {
+    return [];
+  }
+}
 
 module.exports = {
   varcharQueue,
@@ -23,4 +29,5 @@ module.exports = {
   dateQueue,
   float4Queue,
   float8Queue,
+  FlexibleLengthQueue
 };

@@ -36,7 +36,6 @@ async function parsePostgresql() {
       structure: structure.rows,
     });
   }
-  console.log(JSON.stringify(structures));
   return structures;
 }
 /**

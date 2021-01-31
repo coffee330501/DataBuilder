@@ -24,9 +24,7 @@ function workerThread() {
 }
  
 if (isMainThread) {
-  console.log('main');
   mainThread();
 } else {
-  console.log('else');
   workerThread();
 }
