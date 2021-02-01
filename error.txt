@@ -1,5 +1,10 @@
 <--- Last few GCs --->
-31[12340:00000178A5138210]    16753 ms: Mark-sweep 2041.3 (2051.4) -> 2037.3 (2052.1) MB, 1000.4 / 0.0 ms  (+ 451.9 ms in 107 steps since start of marking, biggest step 8.7 ms, walltime since start of marking 1468 ms) (average mu = 0.104, current mu = 0.011[12340:00000178A5138210]    18027 ms: Mark-sweep 2042.5 (2052.4) -> 2039.8 (2053.6) MB, 915.9 / 0.0 ms  (+ 346.5 ms in 82 steps since start of marking, biggest step 8.4 ms, walltime since start of marking 1274 ms) (average mu = 0.061, current mu = 0.009)
+31[12340:00000178A5138210]    16753 ms: Mark-sweep 2041.3 (2051.4) -> 2037.3 (2052.1) MB, 1000.4 / 0.0 ms  
+(+ 451.9 ms in 107 steps since start of marking, biggest step 8.7 ms, walltime since start of marking 1468 ms) 
+(average mu = 0.104, current mu = 0.011[12340:00000178A5138210]    
+18027 ms: Mark-sweep 2042.5 (2052.4) -> 2039.8 (2053.6) MB, 915.9 / 0.0 ms 
+ (+ 346.5 ms in 82 steps since start of marking, biggest step 8.4 ms, walltime since start of marking 1274 ms) 
+ (average mu = 0.061, current mu = 0.009)
 
 <--- JS stacktrace --->
 

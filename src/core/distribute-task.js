@@ -7,6 +7,7 @@ const {config} = require('./config-parser');
 const {
   Worker,
 } = require("worker_threads");
+const ThreadMsgEnum = require('../enum/thread-enum');
 const chalk = require("chalk");
 
 async function distributeTask() {
@@ -28,13 +29,10 @@ async function distributeTask() {
         tableName,
         fields,
         dataSize: config.dataSize,
-        work: true,
       };
       const worker = new Worker(`${process.cwd()}/core/woker.js`, { workerData });
-      worker.on("exit", () => {});
-      worker.on("message", () => {
-        worker.postMessage(1);
-      });
+      worker.on("exit", () => {console.log(chalk.greenBright('插入成功...'));process.exit();});
+      worker.postMessage(ThreadMsgEnum.START)
     }
   } catch (err) {
     console.log(chalk.redBright('An error occurred at file distribute-task.js function distributeTask() \n',chalk.redBright(err)));

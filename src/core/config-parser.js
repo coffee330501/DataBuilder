@@ -9,7 +9,7 @@ let tables = [];
 let sqlType = [];
 // let PUBLIC_PATH = path.resolve(__dirname, 'builderConfig.json');
 const config = JSON.parse(
-  fs.readFileSync( `E:\\Workspace\\Projects\\DataBuilder\\builderConfig.json`, "utf-8")
+  fs.readFileSync(path.join(__dirname,'../../builderConfig.json') , "utf-8")
 );
 
 tables = config.tables;

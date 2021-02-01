@@ -21,7 +21,7 @@ typeGeneratorMap.set('int',generateint8);
  * 生产varchar数据
  */
 function generateVarchar(length) {
-  return stringRandom(Math.random() * length);
+  return surroundWithMark(stringRandom(Math.random(length)));
 }
 
 /**
@@ -56,14 +56,14 @@ function generateint8() {
  * 基于时间戳生成uuid
  */
 function generateUUID_V1() {
-  return UUID.v1();
+  return surroundWithMark(UUID.v1());
 }
 
 /**
  * 基于时间戳生成uuid
  */
 function generateUUID_V4() {
-  return UUID.v4();
+  return surroundWithMark(UUID.v4());
 }
 
 /**
@@ -77,7 +77,7 @@ function generatorBool() {
  * 生产随机日期
  */
 function generateDate() {
-  return new Date(1611671246531 * Math.random() * 2);
+  return surroundWithMark(new Date(1611671246531 * Math.random() * 2).toLocaleDateString());
 }
 
 /**
@@ -96,7 +96,7 @@ function generateAJson() {
     '":"' +
     stringRandom(Math.random() * 10) +
     '"}';
-  return jsonStr;
+  return surroundWithMark(jsonStr);
 }
 
 /**
@@ -118,14 +118,14 @@ function generateJson() {
     }
   }
   jsonStr += "}";
-  return jsonStr;
+  return surroundWithMark(jsonStr);
 }
 
 /**
  * 生产随机时间戳
  */
 function generateTimeStamp() {
-  return 1611671246531 * Math.random() * 2;
+  return surroundWithMark(new Date(1611671246531 * Math.random() * 2).toLocaleDateString())
 }
 
 /**
@@ -133,6 +133,12 @@ function generateTimeStamp() {
  */
 function positiveOrNegative() {
   return Math.random() > 0.5 ? 1 : -1;
+}
+/**
+ * 使用引号包围数据
+ */
+function surroundWithMark(data,mark="'"){
+  return mark+data+mark;
 }
 
 /**
