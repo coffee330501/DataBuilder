@@ -10,7 +10,7 @@ const configParser = require("./config-parser");
 async function parsePostgresql() {
   let structures = [];
   for (const tableName of configParser.tables) {
-    let structure = await configParser.query(`SELECT A
+    let sql = `SELECT A
     .attnum,
     A.attname AS field,
     T.typname AS TYPE,
@@ -30,7 +30,8 @@ async function parsePostgresql() {
     AND A.attrelid = C.oid 
     AND A.atttypid = T.oid 
   ORDER BY
-    A.attnum;`);
+    A.attnum;`;
+    let structure = await configParser.query(sql);
     structures.push({
       tableName: tableName,
       structure: structure.rows,

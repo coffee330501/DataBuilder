@@ -17,6 +17,7 @@ typeGeneratorMap.set('date',generateDate);
 typeGeneratorMap.set('timestamp',generateTimeStamp);
 //别名
 typeGeneratorMap.set('int',generateint8);
+typeGeneratorMap.set('numeric',generateNumeric);
 /**
  * 生产varchar数据
  */
@@ -71,6 +72,14 @@ function generateUUID_V4() {
  */
 function generatorBool() {
   return Math.random() > 0.5 ? 1 : 0;
+}
+
+/**
+ * 生产 NUMERIC 
+ */
+//TODO 修改实现
+function generateNumeric() {
+  return Math.random()*8192;
 }
 
 /**

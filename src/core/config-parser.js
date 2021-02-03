@@ -4,12 +4,11 @@
 const fs = require("fs");
 const { Pool } = require("pg");
 const path = require('path');
-
 let tables = [];
 let sqlType = [];
 // let PUBLIC_PATH = path.resolve(__dirname, 'builderConfig.json');
 const config = JSON.parse(
-  fs.readFileSync(path.join(__dirname,'../../builderConfig.json') , "utf-8")
+  fs.readFileSync(path.join(__dirname,'../../config.json') , "utf-8")
 );
 
 tables = config.tables;
@@ -41,5 +40,6 @@ module.exports = {
   query,
   tables,
   sqlType,
-  config
+  config,
+  close
 };

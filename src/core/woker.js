@@ -21,7 +21,11 @@ parentPort.on("message", async (msg) => {
     const fields = workerData.fields;
     //数据生成器列表
     const generators = [];
-    for (const { type, notnull, lengthvar } of fields) {
+    for (const { type, notnull, lengthvar,custom } of fields) {
+      if(custom){
+        generators.push({ genarator, notnull, lengthvar });
+      }
+
       const genarator = typeGeneratorMap.get(type);
       if (genarator === undefined) {
         console.log(chalk.redBright(`type ${type} 的生成器未定义...`));
@@ -31,13 +35,13 @@ parentPort.on("message", async (msg) => {
     }
     console.log(chalk.blueBright("开始生成数据..."));
     let generatedDataSize = 0;
-    var bar = new ProgressBar("progress: [:bar]", {
-      total: workerData.dataSize,
-      width: 100,
-      complete: "*",
-    });
+    // var bar = new ProgressBar("progress: [:bar]", {
+    //   total: workerData.dataSize,
+    //   width: 100,
+    //   complete: "*",
+    // });
     while (generatedDataSize < workerData.dataSize) {
-      bar.tick(1);
+      // bar.tick(1);
       await insertRow(generators, workerData.tableName);
       generatedDataSize++;
     }
@@ -60,9 +64,28 @@ async function insertRow(generators, tableName) {
     } else {
       const genaratorEntity = generators[index];
       const genarator = genaratorEntity.genarator;
-      values += genarator(genaratorEntity.lengthvar);
+      //如果不是自定义的genarator就是函数，如果genarator是自定义的，它的类型就是object或者字符串
+      if(typeof genarator == 'function'){
+        values += genarator(genaratorEntity.lengthvar);
+        continue;
+      }else if(typeof genarator == 'object'){
+        //config中的in
+        const index = Math.random()*genarator.length%genarator.length;
+        const v = genarator[index];
+        switch (typeof v){
+          case 'string':
+          case 'timestamp':
+          case 'datetime':
+            values+="'"+v+"'";
+            break;
+          default: values+=v;
+        }
+      }else if(typeof genarator == 'string'){
+        //function 字符串
+      }
     }
   }
   sql += values + ")";
   await query(sql);
 }
+const f = 'function t(){return 1;}';
