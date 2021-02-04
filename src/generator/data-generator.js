@@ -15,6 +15,7 @@ typeGeneratorMap.set('bool',generatorBool);
 typeGeneratorMap.set('json',generateJson);
 typeGeneratorMap.set('date',generateDate);
 typeGeneratorMap.set('timestamp',generateTimeStamp);
+typeGeneratorMap.set('timestamptz',generateTimeStamp);
 //别名
 typeGeneratorMap.set('int',generateint8);
 typeGeneratorMap.set('numeric',generateNumeric);
@@ -71,7 +72,7 @@ function generateUUID_V4() {
  * 生产随机布尔值
  */
 function generatorBool() {
-  return Math.random() > 0.5 ? 1 : 0;
+  return Math.random() > 0.5 ? "'t'" : "'f'";
 }
 
 /**

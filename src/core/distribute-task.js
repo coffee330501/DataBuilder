@@ -13,21 +13,20 @@ async function distributeTask() {
     //获取表结构
     const structures = await tableParser.parse();
     //生成数据
+    //配置文件中的自定义field
+    const customFields = config.custom.fields;
     for (const table of structures) {
       const tableName = table.tableName;
       //存储表中的所有字段
       const fields = [];
-      //配置文件中的自定义field
-      const customFields = config.custom.fields;
+
       for (const { field, type, notnull, lengthvar } of table.structure) {
         //structure的格式{"attnum":1,"field":"id","type":"uuid","length":16,"lengthvar":-1,"notnull":true,"comment":null}
         //因为lengthvar比我们定义的长度大4
-        const transField = new TransField(type, notnull, lengthvar - 4); //向worker传递的字段信息
-        transField.custome = customFields[field];
-        console.log(customFields[field]);
+        const transField = new TransField(field,type, notnull, lengthvar - 4); //向worker传递的字段信息
+        transField.setValueFunc(customFields[field]);
         fields.push(transField);
       }
-
       //传给工作线程的数据
       const workerData = {
         tableName,
@@ -62,18 +61,36 @@ async function distributeTask() {
     );
   }
 }
+//TODO 字段的数据生成方法由字段本身决定
 class TransField {
+  field;
   type;
   notnull;
   lengthvar;
-  custome; //json 格式按配置文件中单个字段的自定义配置
-  constructor(type, notnull, lengthvar) {
+  //获取value的func
+  valueFunc;
+  custom;
+  //json 格式按配置文件中单个字段的自定义配置
+  constructor(field,type, notnull, lengthvar) {
+    this.field=field;
     this.type = type;
     this.notnull = notnull;
     this.lengthvar = lengthvar;
   }
-  setCustome(custome) {
-    this.custome = custome;
+  setValueFunc(custom) {
+    if (!custom) {
+      return;
+    }
+    this.custom = custom;
+    if(custom.in){
+      this.valueFunc = `() => {
+        const index =
+          (Math.random() * this.custom.in.length * 10) % this.custom.in.length;
+        return this.custom.in[index];
+      };`;
+    }else if (custom.func) {
+      this.valueFunc = custom.func;
+    }
   }
 }
 

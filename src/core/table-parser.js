@@ -31,7 +31,7 @@ async function parsePostgresql() {
     AND A.atttypid = T.oid 
   ORDER BY
     A.attnum;`;
-    let structure = await configParser.query(sql);
+    const structure = await configParser.query(sql);
     structures.push({
       tableName: tableName,
       structure: structure.rows,

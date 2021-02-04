@@ -19,13 +19,16 @@ parentPort.on("message", async (msg) => {
   } else if (msg === ThreadMsgEnum.START) {
     //获取表的类型
     const fields = workerData.fields;
+    console.log(JSON.stringify(workerData));
     //数据生成器列表
     const generators = [];
-    for (const { type, notnull, lengthvar,custom } of fields) {
-      if(custom){
-        generators.push({ genarator, notnull, lengthvar });
+    for (const { field,type, notnull, lengthvar, custom, setValueFunc } of fields) {
+      if (custom) {
+        console.log('-------------------------');
+        console.log(field,setValueFunc);
+        generators.push({ genarator: setValueFunc, notnull, lengthvar });
+        continue;
       }
-
       const genarator = typeGeneratorMap.get(type);
       if (genarator === undefined) {
         console.log(chalk.redBright(`type ${type} 的生成器未定义...`));
@@ -45,14 +48,14 @@ parentPort.on("message", async (msg) => {
       await insertRow(generators, workerData.tableName);
       generatedDataSize++;
     }
-    //parentPort.postMessage(ThreadMsgEnum.FINISH);
+    // parentPort.postMessage(ThreadMsgEnum.FINISH);
   }
 });
 parentPort.postMessage(ThreadMsgEnum.START);
 
 //插入一行数据
 async function insertRow(generators, tableName) {
-  let sql = `INSERT INTO ${tableName} VALUES (`;
+  let sql = `INSERT INTO "${tableName}" VALUES (`;
   let values = "";
   for (const index in generators) {
     if (index != 0) {
@@ -63,29 +66,36 @@ async function insertRow(generators, tableName) {
       continue;
     } else {
       const genaratorEntity = generators[index];
-      const genarator = genaratorEntity.genarator;
-      //如果不是自定义的genarator就是函数，如果genarator是自定义的，它的类型就是object或者字符串
-      if(typeof genarator == 'function'){
-        values += genarator(genaratorEntity.lengthvar);
+      const generator = genaratorEntity.genarator;
+      //如果不是自定义的generator就是函数，如果genarator是自定义的，它的类型就是object(数组)或者字符串
+      if (typeof generator == "function") {
+        values += generator(genaratorEntity.lengthvar);
         continue;
-      }else if(typeof genarator == 'object'){
-        //config中的in
-        const index = Math.random()*genarator.length%genarator.length;
-        const v = genarator[index];
-        switch (typeof v){
-          case 'string':
-          case 'timestamp':
-          case 'datetime':
-            values+="'"+v+"'";
-            break;
-          default: values+=v;
-        }
-      }else if(typeof genarator == 'string'){
-        //function 字符串
+      } else {
+        values += new Function(generator)();
       }
+      // else if (typeof genarator == "object") {
+      //   //config中的in
+      //   const index = (Math.random() * genarator.length) % genarator.length;
+      //   const v = genarator[index];
+      //   switch (typeof v) {
+      //     case "string":
+      //       values += "'" + v + "'";
+      //       break;
+      //     default:
+      //       values += v;
+      //   }
+      // } else if (typeof genarator == "string") {
+      //   //function 字符串
+      //   values += eval(genarator)();
+      // }
     }
   }
   sql += values + ")";
-  await query(sql);
+  try {
+    await query(sql);
+  } catch (err) {
+    console.log(chalk.redBright("SQL执行异常，异常SQL为：", sql));
+    throw err;
+  }
 }
-const f = 'function t(){return 1;}';

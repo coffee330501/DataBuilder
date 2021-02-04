@@ -1,17 +1,20 @@
 {
   "SQLType": "postgresql",
-  "host": "localhost",
-  "port": "5433",
+  "host": "www.for-us.top",
+  "port": "5432",
   "user": "postgres",
   "password": "root",
-  "database": "postgres",
-  "tables": ["accountFeeRate"],
+  "database": "qbitpay_3.1",
+  "tables": ["balance","accountExtend"],
   "dataSize": 10,
   "custom": {
     "fields": {
-      "fieldName": {
-        "in": ["可能的值"],
-        "func": "function v(){return 0;}"
+      "deleteTime1": {
+        "in": ["2011/1/11",null],
+        "func": "()=>{return \"1911/11/11\"}"
+      },
+      "createTime1": {
+        "func": "function v(){return \"1911/12/11\";}"
       }
     }
   }
