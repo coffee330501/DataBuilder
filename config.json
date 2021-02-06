@@ -1,10 +1,10 @@
 {
   "SQLType": "postgresql",
-  "host": "www.for-us.top",
-  "port": "5432",
-  "user": "postgres",
-  "password": "root",
-  "database": "qbitpay_3.1",
+  "host": "",
+  "port": "",
+  "user": "",
+  "password": "",
+  "database": "",
   "tables": ["balance","accountExtend"],
   "dataSize": 10,
   "custom": {
